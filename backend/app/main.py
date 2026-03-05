@@ -6,8 +6,10 @@ app = FastAPI(title="Digital Complaint System API")
 
 # Configure CORS
 origins = [
-    "http://localhost:5173", # Vite default port
-    "*" # For deployment
+    "http://localhost:5173",    # Local development
+    "http://127.0.0.1:5173",  # Local development (alternate)
+    "https://dcmts.vercel.app", # Production frontend
+    "https://dcmts.onrender.com" # Production backend
 ]
 
 app.add_middleware(
