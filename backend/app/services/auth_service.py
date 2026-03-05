@@ -17,24 +17,46 @@ def register_user(user_data: UserCreate) -> UserResponse:
         )
 
     hashed_pwd = hash_password(user_data.password)
-    user_model = UserModel(
-        name=user_data.name,
-        email=user_data.email,
-        password_hash=hashed_pwd,
-        role=user_data.role
-    )
+    user_dict = user_data.model_dump()
+    del user_dict["password"]
+    user_dict["password_hash"] = hashed_pwd
 
-    user_dict = user_model.model_dump()
-    result = users_collection.insert_one(user_dict)
+    user_model = UserModel(**user_dict)
+
+    result = users_collection.insert_one(user_model.model_dump())
+    user_id = str(result.inserted_id)
 
     # Return UserResponse
     return UserResponse(
-        id=str(result.inserted_id),
-        name=user_model.name,
-        email=user_model.email,
-        role=user_model.role,
-        created_at=user_model.created_at
+        id=user_id,
+        **user_model.model_dump()
     )
+
+def update_user_profile(user_id: str, update_data: dict) -> UserResponse:
+    # Filter out None values and disallowed fields
+    allowed_fields = ["name", "age", "department", "semester"]
+    update_dict = {k: v for k, v in update_data.items() if k in allowed_fields and v is not None}
+
+    if not update_dict:
+        # Fetch current user to return
+        user = users_collection.find_one({"_id": ObjectId(user_id)})
+        user["id"] = str(user["_id"])
+        return UserResponse(**user)
+
+    result = users_collection.find_one_and_update(
+        {"_id": ObjectId(user_id)},
+        {"$set": update_dict},
+        return_document=True
+    )
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    result["id"] = str(result["_id"])
+    return UserResponse(**result)
 
 def authenticate_user(user_data: UserLogin) -> dict:
     user = users_collection.find_one({"email": user_data.email})

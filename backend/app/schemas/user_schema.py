@@ -6,10 +6,19 @@ from app.constants.roles import Role
 class UserBase(BaseModel):
     name: str
     email: EmailStr
+    age: Optional[int] = None
+    department: Optional[str] = None
+    semester: Optional[str] = None
 
 class UserCreate(UserBase):
     password: str
     role: Role = Role.STUDENT
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    department: Optional[str] = None
+    semester: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr

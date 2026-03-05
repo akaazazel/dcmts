@@ -16,6 +16,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import TicketDetail from "./pages/TicketDetail";
+import Profile from "./pages/Profile";
 
 const AppLayout = ({ children }) => {
     return (
@@ -111,6 +112,7 @@ const App = () => {
                                 path="/tickets/:id"
                                 element={<TicketDetail />}
                             />
+                            <Route path="/profile" element={<Profile />} />
                         </Route>
 
                         {/* Fallback */}

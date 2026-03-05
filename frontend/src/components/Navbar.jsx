@@ -80,7 +80,10 @@ const Navbar = () => {
 
                                 <div className="h-5 w-px bg-gray-200 hidden md:block mx-2"></div>
 
-                                <div className="flex items-center space-x-2 text-sm text-gray-700 font-medium px-2 py-1.5 rounded-md hover:bg-gray-50 transition cursor-default">
+                                <Link
+                                    to="/profile"
+                                    className="flex items-center space-x-2 text-sm text-gray-700 font-medium px-2 py-1.5 rounded-md hover:bg-gray-100 transition shadow-sm border border-transparent hover:border-gray-200"
+                                >
                                     <div className="bg-gray-100 flex items-center justify-center rounded-full h-6 w-6 border border-gray-200">
                                         <User
                                             size={14}
@@ -90,7 +93,7 @@ const Navbar = () => {
                                     <span className="hidden sm:inline-block">
                                         {user.name.split(" ")[0]}
                                     </span>
-                                </div>
+                                </Link>
                                 <button
                                     onClick={handleLogout}
                                     className="p-1.5 rounded-md text-gray-400 hover:text-black hover:bg-gray-100 transition-colors"

@@ -289,7 +289,7 @@ const TicketDetail = () => {
                                     onChange={(e) =>
                                         setStatusUpdate(e.target.value)
                                     }
-                                    className="w-full text-sm border-gray-300 rounded-md focus:ring-black focus:border-black py-2 bg-gray-50 shadow-sm"
+                                    className="w-full text-sm border-gray-300 rounded-md focus:ring-black focus:border-black py-2 bg-white shadow-sm font-medium text-gray-900"
                                 >
                                     <option value="OPEN">Open</option>
                                     <option value="ASSIGNED">Assigned</option>
@@ -313,7 +313,7 @@ const TicketDetail = () => {
                                         onChange={(e) =>
                                             setAssigneeUpdate(e.target.value)
                                         }
-                                        className="w-full text-sm border-gray-300 rounded-md focus:ring-black focus:border-black py-2 bg-gray-50 shadow-sm"
+                                        className="w-full text-sm border-gray-300 rounded-md focus:ring-black focus:border-black py-2 bg-white shadow-sm font-medium text-gray-900"
                                     >
                                         <option value="">Unassigned</option>
                                         {staffList.map((staff) => (

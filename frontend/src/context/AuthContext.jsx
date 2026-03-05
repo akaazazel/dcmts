@@ -79,9 +79,26 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("access_token");
     };
 
+    const refreshUser = async () => {
+        try {
+            const res = await apiClient.get("/auth/me");
+            setUser(res.data);
+        } catch (err) {
+            console.error("Failed to refresh user info", err);
+        }
+    };
+
     return (
         <AuthContext.Provider
-            value={{ user, token, loading, login, logout, register }}
+            value={{
+                user,
+                token,
+                loading,
+                login,
+                logout,
+                register,
+                refreshUser,
+            }}
         >
             {children}
         </AuthContext.Provider>

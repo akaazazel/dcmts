@@ -8,6 +8,9 @@ class UserModel(BaseModel):
     email: EmailStr
     password_hash: str
     role: Role = Role.STUDENT
+    age: Optional[int] = None
+    department: Optional[str] = None
+    semester: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Config:
