@@ -12,9 +12,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SubmitComplaint from "./pages/SubmitComplaint";
-// import Dashboard from './pages/Dashboard';
-// import AdminDashboard from './pages/AdminDashboard';
-// import StaffDashboard from './pages/StaffDashboard';
+import StudentDashboard from "./pages/StudentDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import StaffDashboard from "./pages/StaffDashboard";
 
 const AppLayout = ({ children }) => {
     return (
@@ -59,21 +59,26 @@ const App = () => {
                         {/* Root Redirect based on user state */}
                         <Route path="/" element={<RootRedirect />} />
 
-                        {/* Protected Routes (Placeholders for now) */}
+                        {/* Protected Routes */}
                         <Route
                             element={
-                                <ProtectedRoute
-                                    allowedRoles={["student", "admin"]}
-                                />
+                                <ProtectedRoute allowedRoles={["student"]} />
+                            }
+                        >
+                            <Route
+                                path="/submit"
+                                element={<SubmitComplaint />}
+                            />
+                        </Route>
+
+                        <Route
+                            element={
+                                <ProtectedRoute allowedRoles={["student"]} />
                             }
                         >
                             <Route
                                 path="/dashboard"
-                                element={
-                                    <div className="p-4 bg-white rounded shadow text-center">
-                                        Student Dashboard Placeholder
-                                    </div>
-                                }
+                                element={<StudentDashboard />}
                             />
                         </Route>
 
@@ -82,21 +87,12 @@ const App = () => {
                                 <ProtectedRoute allowedRoles={["admin"]} />
                             }
                         >
-                            <Route
-                                path="/admin"
-                                element={
-                                    <div className="p-4 bg-white rounded shadow text-center text-primary font-bold">
-                                        Admin Dashboard Placeholder
-                                    </div>
-                                }
-                            />
+                            <Route path="/admin" element={<AdminDashboard />} />
                         </Route>
 
                         <Route
                             element={
-                                <ProtectedRoute
-                                    allowedRoles={["staff", "admin"]}
-                                />
+                                <ProtectedRoute allowedRoles={["staff"]} />
                             }
                         >
                             <Route
