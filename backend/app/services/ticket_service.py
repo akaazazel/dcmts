@@ -105,3 +105,12 @@ def update_ticket_status(ticket_obj_id: str, new_status: TicketStatus) -> dict:
 def get_staff_tickets(staff_id: str) -> List[TicketResponse]:
     tickets_cursor = tickets_collection.find({"assigned_to": staff_id}).sort("created_at", -1)
     return [map_ticket_to_response(ticket) for ticket in tickets_cursor]
+
+def delete_multiple_tickets(ticket_ids: List[str]) -> dict:
+    try:
+        object_ids = [ObjectId(tid) for tid in ticket_ids]
+        result = tickets_collection.delete_many({"_id": {"$in": object_ids}})
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid ticket IDs")
+
+    return {"message": f"{result.deleted_count} tickets deleted successfully"}

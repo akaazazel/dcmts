@@ -1,13 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List, Any
-from app.schemas.ticket_schema import TicketResponse, TicketAssign, TicketStatusUpdate
+from app.schemas.ticket_schema import (
+    TicketResponse,
+    TicketAssign,
+    TicketStatusUpdate,
+    BulkDeleteRequest
+)
 from app.schemas.user_schema import UserResponse
 from app.services.ticket_service import (
     get_all_tickets,
     assign_ticket,
     update_ticket_status,
-    delete_ticket_by_id
+    delete_ticket_by_id,
+    delete_multiple_tickets
 )
+from app.services.auth_service import delete_user_by_id
 from app.middleware.auth_middleware import get_current_active_user
 from app.constants.roles import Role
 from app.database import users_collection
@@ -25,6 +32,13 @@ def require_admin(current_user: dict = Depends(get_current_active_user)) -> dict
 @router.get("/tickets", response_model=List[TicketResponse])
 def read_all_tickets(current_user: dict = Depends(require_admin)) -> Any:
     return get_all_tickets()
+
+@router.post("/tickets/bulk-delete")
+def delete_bulk_tickets(
+    request: BulkDeleteRequest,
+    current_user: dict = Depends(require_admin)
+) -> Any:
+    return delete_multiple_tickets(request.ticket_ids)
 
 @router.put("/tickets/{ticket_id}/assign")
 def assign_ticket_to_staff(
@@ -57,3 +71,16 @@ def get_all_users(current_user: dict = Depends(require_admin)) -> Any:
         user["id"] = str(user["_id"])
         users.append(UserResponse(**user))
     return users
+
+@router.delete("/users/{user_id}")
+def remove_user(
+    user_id: str,
+    current_user: dict = Depends(require_admin)
+) -> Any:
+    # Prevent admin from deleting themselves
+    if user_id == str(current_user["_id"]):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You cannot delete your own account"
+        )
+    return delete_user_by_id(user_id)

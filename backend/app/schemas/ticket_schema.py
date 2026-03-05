@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from app.constants.ticket_status import TicketStatus
 from app.schemas.user_schema import UserResponse
@@ -24,6 +24,9 @@ class TicketAssign(BaseModel):
 
 class TicketStatusUpdate(BaseModel):
     status: TicketStatus
+
+class BulkDeleteRequest(BaseModel):
+    ticket_ids: List[str]
 
 class TicketResponse(TicketBase):
     id: str

@@ -3,7 +3,16 @@ import { Link } from "react-router-dom";
 import apiClient from "../api/apiClient";
 import TicketCard from "../components/TicketCard";
 import { useAuth } from "../hooks/useAuth";
-import { Search, Filter, ShieldCheck, Users, Ticket } from "lucide-react";
+import {
+    Search,
+    Filter,
+    ShieldCheck,
+    Users,
+    Ticket,
+    Trash2,
+    CheckCircle,
+    Circle,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
@@ -13,6 +22,7 @@ const AdminDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
     const [staffMembers, setStaffMembers] = useState([]);
+    const [selectedTickets, setSelectedTickets] = useState([]);
 
     useEffect(() => {
         fetchTickets();
@@ -39,6 +49,53 @@ const AdminDashboard = () => {
             setStaffMembers(res.data.filter((u) => u.role === "staff"));
         } catch (err) {
             console.error("Failed to load users:", err);
+        }
+    };
+
+    const toggleSelect = (id) => {
+        setSelectedTickets((prev) =>
+            prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+        );
+    };
+
+    const handleSelectAll = () => {
+        const allFilteredIds = filteredTickets.map((t) => t.id);
+        const allSelected = allFilteredIds.every((id) =>
+            selectedTickets.includes(id),
+        );
+
+        if (allSelected) {
+            setSelectedTickets(
+                selectedTickets.filter((id) => !allFilteredIds.includes(id)),
+            );
+        } else {
+            setSelectedTickets([
+                ...new Set([...selectedTickets, ...allFilteredIds]),
+            ]);
+        }
+    };
+
+    const handleBulkDelete = async () => {
+        if (
+            !window.confirm(
+                `Are you sure you want to delete ${selectedTickets.length} selected tickets?`,
+            )
+        ) {
+            return;
+        }
+
+        try {
+            await apiClient.post("/admin/tickets/bulk-delete", {
+                ticket_ids: selectedTickets,
+            });
+            toast.success(
+                `${selectedTickets.length} tickets deleted successfully`,
+            );
+            setTickets(tickets.filter((t) => !selectedTickets.includes(t.id)));
+            setSelectedTickets([]);
+        } catch (err) {
+            toast.error("Failed to delete tickets");
+            console.error(err);
         }
     };
 
@@ -104,52 +161,93 @@ const AdminDashboard = () => {
             </div>
 
             {/* Filters and Search */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="relative w-full sm:max-w-md">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search size={16} className="text-gray-400" />
+            <div className="flex flex-col space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <div className="relative w-full sm:max-w-md">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search size={16} className="text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            className="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors placeholder-gray-400"
+                            placeholder="Search all tickets by title or ID..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
-                    <input
-                        type="text"
-                        className="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors placeholder-gray-400"
-                        placeholder="Search all tickets by title or ID..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+
+                    <div className="flex gap-2 min-w-max w-full sm:w-auto">
+                        <div className="relative w-full sm:w-auto min-w-[150px]">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Filter size={16} className="text-gray-400" />
+                            </div>
+                            <select
+                                className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors appearance-none font-medium text-gray-700"
+                                value={statusFilter}
+                                onChange={(e) =>
+                                    setStatusFilter(e.target.value)
+                                }
+                            >
+                                <option value="All">All Statuses</option>
+                                <option value="OPEN">Open (Unassigned)</option>
+                                <option value="IN_PROGRESS">In Progress</option>
+                                <option value="RESOLVED">Resolved</option>
+                                <option value="CLOSED">Closed</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                                <svg
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="flex gap-2 min-w-max w-full sm:w-auto">
-                    <div className="relative w-full sm:w-auto min-w-[150px]">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Filter size={16} className="text-gray-400" />
-                        </div>
-                        <select
-                            className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors appearance-none font-medium text-gray-700"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
+                {/* Selection Toolbar */}
+                <div className="flex items-center justify-between bg-white px-4 py-2 rounded-lg border border-gray-200">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={handleSelectAll}
+                            className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-black transition-colors"
                         >
-                            <option value="All">All Statuses</option>
-                            <option value="OPEN">Open (Unassigned)</option>
-                            <option value="IN_PROGRESS">In Progress</option>
-                            <option value="RESOLVED">Resolved</option>
-                            <option value="CLOSED">Closed</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                            <svg
-                                className="h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M19 9l-7 7-7-7"
+                            {filteredTickets.length > 0 &&
+                            filteredTickets.every((t) =>
+                                selectedTickets.includes(t.id),
+                            ) ? (
+                                <CheckCircle
+                                    size={18}
+                                    className="text-primary"
                                 />
-                            </svg>
-                        </div>
+                            ) : (
+                                <Circle size={18} />
+                            )}
+                            Select All
+                        </button>
+                        {selectedTickets.length > 0 && (
+                            <span className="text-sm text-gray-400 border-l border-gray-200 pl-4">
+                                {selectedTickets.length} Selected
+                            </span>
+                        )}
                     </div>
+                    {selectedTickets.length > 0 && (
+                        <button
+                            onClick={handleBulkDelete}
+                            className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-600 hover:text-white transition-all text-xs font-bold"
+                        >
+                            <Trash2 size={14} />
+                            Delete Selected
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -161,7 +259,12 @@ const AdminDashboard = () => {
             ) : filteredTickets.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredTickets.map((ticket) => (
-                        <TicketCard key={ticket.id} ticket={ticket} />
+                        <TicketCard
+                            key={ticket.id}
+                            ticket={ticket}
+                            onSelect={toggleSelect}
+                            isSelected={selectedTickets.includes(ticket.id)}
+                        />
                     ))}
                 </div>
             ) : (

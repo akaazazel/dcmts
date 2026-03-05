@@ -75,3 +75,14 @@ def authenticate_user(user_data: UserLogin) -> dict:
     # Create access token
     token = create_access_token(data={"sub": str(user["_id"]), "role": user["role"]})
     return {"access_token": token, "token_type": "bearer"}
+
+def delete_user_by_id(user_id: str) -> dict:
+    try:
+        result = users_collection.delete_one({"_id": ObjectId(user_id)})
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid user ID")
+
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return {"message": "User deleted successfully"}

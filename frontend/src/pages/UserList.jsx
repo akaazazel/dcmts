@@ -11,7 +11,9 @@ import {
     Shield,
     UserCircle,
     ArrowLeft,
+    Trash2,
 } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +23,7 @@ const UserList = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [roleFilter, setRoleFilter] = useState("All");
+    const { user: currentUser } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,6 +40,25 @@ const UserList = () => {
             toast.error("Failed to load users.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteUser = async (userId, userName) => {
+        if (
+            !window.confirm(
+                `Are you sure you want to remove ${userName}? This action cannot be undone.`,
+            )
+        ) {
+            return;
+        }
+
+        try {
+            await apiClient.delete(`/admin/users/${userId}`);
+            toast.success("User removed successfully");
+            setUsers(users.filter((u) => u.id !== userId));
+        } catch (err) {
+            console.error("Error deleting user:", err);
+            toast.error(err.response?.data?.detail || "Failed to remove user");
         }
     };
 
@@ -139,6 +161,9 @@ const UserList = () => {
                                 <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted text-right">
                                     Joined
                                 </th>
+                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted text-right">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -210,8 +235,8 @@ const UserList = () => {
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex flex-col items-end">
+                                        <td className="px-6 py-4">
+                                            <div className="flex flex-col">
                                                 <div className="flex items-center gap-1.5 text-xs text-foreground font-medium">
                                                     <Calendar
                                                         size={12}
@@ -229,6 +254,27 @@ const UserList = () => {
                                                     )}
                                                 </span>
                                             </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            {u.id !== currentUser?.id &&
+                                                (u.role === "staff" ||
+                                                    u.role === "student") && (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteUser(
+                                                                u.id,
+                                                                u.name,
+                                                            )
+                                                        }
+                                                        className="p-2 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-md transition-all group/del"
+                                                        title="Remove User"
+                                                    >
+                                                        <Trash2
+                                                            size={16}
+                                                            className="group-hover/del:scale-110 transition-transform"
+                                                        />
+                                                    </button>
+                                                )}
                                         </td>
                                     </tr>
                                 ))
