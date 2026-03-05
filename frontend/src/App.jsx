@@ -15,6 +15,7 @@ import SubmitComplaint from "./pages/SubmitComplaint";
 import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
+import TicketDetail from "./pages/TicketDetail";
 
 const AppLayout = ({ children }) => {
     return (
@@ -95,13 +96,20 @@ const App = () => {
                                 <ProtectedRoute allowedRoles={["staff"]} />
                             }
                         >
+                            <Route path="/staff" element={<StaffDashboard />} />
+                        </Route>
+
+                        {/* Shared Protected Route for Ticket Details */}
+                        <Route
+                            element={
+                                <ProtectedRoute
+                                    allowedRoles={["student", "staff", "admin"]}
+                                />
+                            }
+                        >
                             <Route
-                                path="/staff"
-                                element={
-                                    <div className="p-4 bg-white rounded shadow text-center text-orange-600 font-bold">
-                                        Staff Dashboard Placeholder
-                                    </div>
-                                }
+                                path="/tickets/:id"
+                                element={<TicketDetail />}
                             />
                         </Route>
 

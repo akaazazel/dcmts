@@ -34,8 +34,7 @@ const StaffDashboard = () => {
             ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             ticket.ticket_id.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus =
-            statusFilter === "All" ||
-            ticket.status === statusFilter.toLowerCase();
+            statusFilter === "All" || ticket.status === statusFilter;
 
         return matchesSearch && matchesStatus;
     });
@@ -68,7 +67,7 @@ const StaffDashboard = () => {
                             <p className="font-bold text-black text-lg leading-none mt-1">
                                 {
                                     tickets.filter(
-                                        (t) => t.status === "in_progress",
+                                        (t) => t.status === "IN_PROGRESS",
                                     ).length
                                 }
                             </p>
@@ -103,9 +102,9 @@ const StaffDashboard = () => {
                             onChange={(e) => setStatusFilter(e.target.value)}
                         >
                             <option value="All">All Statuses</option>
-                            <option value="open">Open</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="resolved">Resolved</option>
+                            <option value="OPEN">Open</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="RESOLVED">Resolved</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                             <svg

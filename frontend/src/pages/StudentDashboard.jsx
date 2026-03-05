@@ -42,8 +42,7 @@ const StudentDashboard = () => {
             ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             ticket.ticket_id.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus =
-            statusFilter === "All" ||
-            ticket.status === statusFilter.toLowerCase();
+            statusFilter === "All" || ticket.status === statusFilter;
 
         return matchesSearch && matchesStatus;
     });
@@ -86,7 +85,7 @@ const StudentDashboard = () => {
                         Open
                     </span>
                     <span className="text-3xl font-bold text-blue-600 mt-2">
-                        {tickets.filter((t) => t.status === "open").length}
+                        {tickets.filter((t) => t.status === "OPEN").length}
                     </span>
                 </div>
                 <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col hover:border-gray-300 transition-colors">
@@ -95,7 +94,7 @@ const StudentDashboard = () => {
                     </span>
                     <span className="text-3xl font-bold text-yellow-600 mt-2">
                         {
-                            tickets.filter((t) => t.status === "in_progress")
+                            tickets.filter((t) => t.status === "IN_PROGRESS")
                                 .length
                         }
                     </span>
@@ -105,7 +104,7 @@ const StudentDashboard = () => {
                         Resolved
                     </span>
                     <span className="text-3xl font-bold text-green-600 mt-2">
-                        {tickets.filter((t) => t.status === "resolved").length}
+                        {tickets.filter((t) => t.status === "RESOLVED").length}
                     </span>
                 </div>
             </div>
@@ -135,10 +134,10 @@ const StudentDashboard = () => {
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
                         <option value="All">All Statuses</option>
-                        <option value="open">Open</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="resolved">Resolved</option>
-                        <option value="closed">Closed</option>
+                        <option value="OPEN">Open</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="RESOLVED">Resolved</option>
+                        <option value="CLOSED">Closed</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                         <svg
