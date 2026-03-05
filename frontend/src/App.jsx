@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import TicketDetail from "./pages/TicketDetail";
 import Profile from "./pages/Profile";
+import UserList from "./pages/UserList";
 
 const AppLayout = ({ children }) => {
     return (
@@ -90,6 +91,7 @@ const App = () => {
                             }
                         >
                             <Route path="/admin" element={<AdminDashboard />} />
+                            <Route path="/admin/users" element={<UserList />} />
                         </Route>
 
                         <Route

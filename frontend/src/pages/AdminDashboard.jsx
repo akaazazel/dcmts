@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import apiClient from "../api/apiClient";
 import TicketCard from "../components/TicketCard";
 import { useAuth } from "../hooks/useAuth";
@@ -67,6 +68,13 @@ const AdminDashboard = () => {
                             Manage all system complaints and assign staff
                             members.
                         </p>
+                        <Link
+                            to="/admin/users"
+                            className="inline-flex items-center gap-2 mt-3 text-xs font-bold text-primary bg-muted-background px-3 py-1.5 rounded-md border border-border hover:bg-muted transition-colors shadow-sm"
+                        >
+                            <Users size={14} />
+                            Manage Users
+                        </Link>
                     </div>
                 </div>
                 <div className="flex gap-4">

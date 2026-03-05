@@ -39,7 +39,7 @@ const Navbar = () => {
         }`;
 
     return (
-        <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav className="bg-[var(--card)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-border">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-14">
                     <div className="flex items-center">
@@ -85,12 +85,24 @@ const Navbar = () => {
                                         </Link>
                                     )}
                                     {user.role === "admin" && (
-                                        <Link
-                                            to="/admin"
-                                            className={navLinkClass("/admin")}
-                                        >
-                                            Admin
-                                        </Link>
+                                        <>
+                                            <Link
+                                                to="/admin"
+                                                className={navLinkClass(
+                                                    "/admin",
+                                                )}
+                                            >
+                                                Tickets
+                                            </Link>
+                                            <Link
+                                                to="/admin/users"
+                                                className={navLinkClass(
+                                                    "/admin/users",
+                                                )}
+                                            >
+                                                Users
+                                            </Link>
+                                        </>
                                     )}
                                 </div>
 
