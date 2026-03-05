@@ -1,25 +1,41 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { LogOut, User, LayoutTemplate } from "lucide-react";
+import { LogOut, User, LayoutTemplate, Moon, Sun } from "lucide-react";
 
 const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [darkMode, setDarkMode] = React.useState(() => {
+        const saved = localStorage.getItem("darkMode");
+        return saved === null ? false : saved === "true";
+    });
+
+    React.useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+        localStorage.setItem("darkMode", darkMode);
+    }, [darkMode]);
+
     const handleLogout = () => {
         logout();
         navigate("/login");
     };
+
+    const toggleDarkMode = () => setDarkMode(!darkMode);
 
     const isActive = (path) => location.pathname === path;
 
     const navLinkClass = (path) =>
         `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
             isActive(path)
-                ? "text-black bg-gray-100/50"
-                : "text-gray-500 hover:text-gray-900"
+                ? "text-primary bg-muted-background"
+                : "text-muted hover:text-foreground hover:bg-muted-background"
         }`;
 
     return (
@@ -82,12 +98,12 @@ const Navbar = () => {
 
                                 <Link
                                     to="/profile"
-                                    className="flex items-center space-x-2 text-sm text-gray-700 font-medium px-2 py-1.5 rounded-md hover:bg-gray-100 transition shadow-sm border border-transparent hover:border-gray-200"
+                                    className="flex items-center space-x-2 text-sm font-medium px-2 py-1.5 rounded-md hover:bg-muted-background transition shadow-sm border border-transparent hover:border-border"
                                 >
-                                    <div className="bg-gray-100 flex items-center justify-center rounded-full h-6 w-6 border border-gray-200">
+                                    <div className="bg-muted-background flex items-center justify-center rounded-full h-6 w-6 border border-border">
                                         <User
                                             size={14}
-                                            className="text-gray-600"
+                                            className="text-muted"
                                         />
                                     </div>
                                     <span className="hidden sm:inline-block">
@@ -95,8 +111,23 @@ const Navbar = () => {
                                     </span>
                                 </Link>
                                 <button
+                                    onClick={toggleDarkMode}
+                                    className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-muted-background transition-colors"
+                                    title={
+                                        darkMode
+                                            ? "Switch to Light Mode"
+                                            : "Switch to Dark Mode"
+                                    }
+                                >
+                                    {darkMode ? (
+                                        <Sun size={18} />
+                                    ) : (
+                                        <Moon size={18} />
+                                    )}
+                                </button>
+                                <button
                                     onClick={handleLogout}
-                                    className="p-1.5 rounded-md text-gray-400 hover:text-black hover:bg-gray-100 transition-colors"
+                                    className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-muted-background transition-colors"
                                     title="Logout"
                                 >
                                     <LogOut size={18} />
@@ -104,6 +135,21 @@ const Navbar = () => {
                             </>
                         ) : (
                             <div className="space-x-4 flex items-center">
+                                <button
+                                    onClick={toggleDarkMode}
+                                    className="p-1.5 rounded-md text-gray-500 hover:text-black hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors mr-2"
+                                    title={
+                                        darkMode
+                                            ? "Switch to Light Mode"
+                                            : "Switch to Dark Mode"
+                                    }
+                                >
+                                    {darkMode ? (
+                                        <Sun size={18} />
+                                    ) : (
+                                        <Moon size={18} />
+                                    )}
+                                </button>
                                 <Link
                                     to="/login"
                                     className="text-gray-500 text-sm hover:text-black font-medium transition-colors"

@@ -85,7 +85,7 @@ const Profile = () => {
                         </p>
                     </div>
                 </div>
-                <div className="bg-black text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
                     {user.role}
                 </div>
             </div>
@@ -204,10 +204,10 @@ const Profile = () => {
                                 <button
                                     type="submit"
                                     disabled={updating}
-                                    className="inline-flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-md hover:bg-gray-800 transition-all font-medium text-sm shadow-md active:scale-95 disabled:opacity-50"
+                                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-md hover:opacity-90 transition-all font-medium text-sm shadow-md active:scale-95 disabled:opacity-50"
                                 >
                                     {updating ? (
-                                        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                                     ) : (
                                         <Save size={18} />
                                     )}
