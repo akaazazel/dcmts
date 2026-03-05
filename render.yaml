@@ -1,0 +1,15 @@
+services:
+    - type: web
+      name: dcmts-backend
+      runtime: python
+      buildCommand: pip install -r backend/requirements.txt
+      startCommand: gunicorn -c backend/gunicorn_config.py app.main:app
+      envVars:
+          - key: MONGO_URI
+            sync: false # Set in Render Dashboard
+          - key: JWT_SECRET
+            sync: false # Set in Render Dashboard
+          - key: PORT
+            value: 8000
+      regions:
+          - ohio # Choose preferred region

@@ -11,3 +11,5 @@ email-validator
 pytest
 httpx
 python-multipart
+gunicorn
+uvicorn[standard]
