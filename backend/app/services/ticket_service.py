@@ -42,8 +42,36 @@ def get_ticket_by_id(ticket_obj_id: str) -> TicketResponse:
     return map_ticket_to_response(ticket)
 
 def map_ticket_to_response(ticket: dict) -> TicketResponse:
+    from app.database import users_collection
+    from app.schemas.user_schema import UserResponse
+
     ticket["id"] = str(ticket["_id"])
+
+    # Resolve creator info
+    creator = users_collection.find_one({"_id": ObjectId(ticket["created_by"])})
+    if creator:
+        creator["id"] = str(creator["_id"])
+        ticket["user"] = UserResponse(**creator)
+
+    # Resolve assigned staff info
+    if ticket.get("assigned_to"):
+        staff = users_collection.find_one({"_id": ObjectId(ticket["assigned_to"])})
+        if staff:
+            staff["id"] = str(staff["_id"])
+            ticket["assigned_staff"] = UserResponse(**staff)
+
     return TicketResponse(**ticket)
+
+def delete_ticket_by_id(ticket_obj_id: str) -> dict:
+    try:
+        result = tickets_collection.delete_one({"_id": ObjectId(ticket_obj_id)})
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid ticket format")
+
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ticket not found")
+
+    return {"message": "Ticket deleted successfully"}
 
 def get_all_tickets() -> List[TicketResponse]:
     tickets_cursor = tickets_collection.find().sort("created_at", -1)

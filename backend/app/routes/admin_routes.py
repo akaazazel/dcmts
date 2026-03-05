@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List, Any
 from app.schemas.ticket_schema import TicketResponse, TicketAssign, TicketStatusUpdate
 from app.schemas.user_schema import UserResponse
-from app.services.ticket_service import get_all_tickets, assign_ticket, update_ticket_status
+from app.services.ticket_service import (
+    get_all_tickets,
+    assign_ticket,
+    update_ticket_status,
+    delete_ticket_by_id
+)
 from app.middleware.auth_middleware import get_current_active_user
 from app.constants.roles import Role
 from app.database import users_collection
@@ -36,6 +41,13 @@ def change_ticket_status(
     current_user: dict = Depends(require_admin)
 ) -> Any:
     return update_ticket_status(ticket_id, status_update.status)
+
+@router.delete("/tickets/{ticket_id}")
+def delete_ticket(
+    ticket_id: str,
+    current_user: dict = Depends(require_admin)
+) -> Any:
+    return delete_ticket_by_id(ticket_id)
 
 @router.get("/users", response_model=List[UserResponse])
 def get_all_users(current_user: dict = Depends(require_admin)) -> Any:

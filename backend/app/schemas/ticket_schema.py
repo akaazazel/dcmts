@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from app.constants.ticket_status import TicketStatus
+from app.schemas.user_schema import UserResponse
 
 class TicketBase(BaseModel):
     title: str
@@ -30,6 +31,8 @@ class TicketResponse(TicketBase):
     status: TicketStatus
     created_by: str
     assigned_to: Optional[str] = None
+    user: Optional[UserResponse] = None
+    assigned_staff: Optional[UserResponse] = None
     created_at: datetime
     updated_at: datetime
 
