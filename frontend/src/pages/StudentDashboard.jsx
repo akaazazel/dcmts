@@ -49,14 +49,14 @@ const StudentDashboard = () => {
     });
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 max-w-6xl mx-auto">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-6">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                    <h1 className="text-3xl font-bold tracking-tight text-black">
                         Welcome, {user?.name.split(" ")[0]}
                     </h1>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-gray-500 max-w-xl">
                         View and track the progress of your submitted
                         complaints.
                     </p>
@@ -64,73 +64,73 @@ const StudentDashboard = () => {
 
                 <Link
                     to="/submit"
-                    className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary-hover transition-colors shadow-sm font-medium"
+                    className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors shadow-sm font-medium text-sm"
                 >
-                    <PlusCircle size={20} />
-                    New Complaint
+                    <PlusCircle size={16} />
+                    New Ticket
                 </Link>
             </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col hover:border-gray-300 transition-colors">
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Total
                     </span>
-                    <span className="text-2xl font-bold text-gray-900 mt-1">
+                    <span className="text-3xl font-bold text-black mt-2">
                         {tickets.length}
                     </span>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col hover:border-gray-300 transition-colors">
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Open
                     </span>
-                    <span className="text-2xl font-bold text-blue-600 mt-1">
+                    <span className="text-3xl font-bold text-blue-600 mt-2">
                         {tickets.filter((t) => t.status === "open").length}
                     </span>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col hover:border-gray-300 transition-colors">
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                         In Progress
                     </span>
-                    <span className="text-2xl font-bold text-yellow-600 mt-1">
+                    <span className="text-3xl font-bold text-yellow-600 mt-2">
                         {
                             tickets.filter((t) => t.status === "in_progress")
                                 .length
                         }
                     </span>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col hover:border-gray-300 transition-colors">
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Resolved
                     </span>
-                    <span className="text-2xl font-bold text-green-600 mt-1">
+                    <span className="text-3xl font-bold text-green-600 mt-2">
                         {tickets.filter((t) => t.status === "resolved").length}
                     </span>
                 </div>
             </div>
 
             {/* Filters and Search */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1">
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="relative w-full sm:max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search size={18} className="text-gray-400" />
+                        <Search size={16} className="text-gray-400" />
                     </div>
                     <input
                         type="text"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50"
+                        className="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors placeholder-gray-400"
                         placeholder="Search tickets by title or ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
-                <div className="relative min-w-[150px]">
+                <div className="relative w-full sm:w-auto min-w-[160px]">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Filter size={18} className="text-gray-400" />
+                        <Filter size={16} className="text-gray-400" />
                     </div>
                     <select
-                        className="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 appearance-none font-medium text-gray-700"
+                        className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors appearance-none font-medium text-gray-700"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -140,13 +140,28 @@ const StudentDashboard = () => {
                         <option value="resolved">Resolved</option>
                         <option value="closed">Closed</option>
                     </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                        <svg
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 9l-7 7-7-7"
+                            />
+                        </svg>
+                    </div>
                 </div>
             </div>
 
             {/* Tickets List */}
             {loading ? (
                 <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-black"></div>
                 </div>
             ) : filteredTickets.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -155,30 +170,30 @@ const StudentDashboard = () => {
                     ))}
                 </div>
             ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
+                    <div className="w-16 h-16 bg-gray-50 rounded-full border border-gray-100 flex items-center justify-center mb-4 text-gray-400">
                         {searchTerm || statusFilter !== "All" ? (
-                            <Search size={28} />
+                            <Search size={24} />
                         ) : (
-                            <FileText size={28} />
+                            <FileText size={24} />
                         )}
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                    <h3 className="text-lg font-semibold text-black mb-1">
                         {searchTerm || statusFilter !== "All"
-                            ? "No tickets match your filters"
-                            : "No complaints yet"}
+                            ? "No matching tickets"
+                            : "No tickets yet"}
                     </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">
+                    <p className="text-gray-500 max-w-sm mx-auto text-sm">
                         {searchTerm || statusFilter !== "All"
-                            ? "Try adjusting your search term or status filter to find what you are looking for."
-                            : "You haven't submitted any complaints yet. When you do, they'll appear here."}
+                            ? "Try adjusting your search query or status filters."
+                            : "You haven't submitted any tickets yet. When you do, track them here."}
                     </p>
                     {!(searchTerm || statusFilter !== "All") && (
                         <Link
                             to="/submit"
-                            className="mt-6 inline-flex items-center gap-2 bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition"
+                            className="mt-6 inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition shadow-sm text-sm font-medium"
                         >
-                            Submit First Complaint
+                            Submit your first ticket
                         </Link>
                     )}
                 </div>

@@ -53,42 +53,42 @@ const AdminDashboard = () => {
     });
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 max-w-6xl mx-auto flex-col h-full">
             {/* Header Section */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-center gap-6 justify-between">
                 <div className="flex items-center gap-4">
-                    <div className="bg-primary/10 p-3 rounded-full">
-                        <ShieldCheck className="h-8 w-8 text-primary" />
+                    <div className="bg-gray-50 border border-gray-200 p-2.5 rounded-md">
+                        <ShieldCheck className="h-6 w-6 text-black" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                        <h1 className="text-xl font-bold tracking-tight text-black">
                             Admin Control Panel
                         </h1>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 mt-0.5">
                             Manage all system complaints and assign staff
                             members.
                         </p>
                     </div>
                 </div>
                 <div className="flex gap-4">
-                    <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <Ticket className="text-gray-400 h-5 w-5" />
+                    <div className="bg-white px-4 py-2.5 rounded-md border border-gray-200 flex items-center gap-3 shadow-sm hover:border-gray-300 transition-colors">
+                        <Ticket className="text-gray-400 h-4 w-4" />
                         <div>
-                            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                            <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">
                                 Total Tickets
                             </p>
-                            <p className="font-bold text-gray-900 leading-none mt-1">
+                            <p className="font-bold text-black text-lg leading-none mt-1">
                                 {tickets.length}
                             </p>
                         </div>
                     </div>
-                    <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-100 flex items-center gap-3">
-                        <Users className="text-gray-400 h-5 w-5" />
+                    <div className="bg-white px-4 py-2.5 rounded-md border border-gray-200 flex items-center gap-3 shadow-sm hover:border-gray-300 transition-colors">
+                        <Users className="text-gray-400 h-4 w-4" />
                         <div>
-                            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                            <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">
                                 Active Staff
                             </p>
-                            <p className="font-bold text-gray-900 leading-none mt-1">
+                            <p className="font-bold text-black text-lg leading-none mt-1">
                                 {staffMembers.length}
                             </p>
                         </div>
@@ -97,27 +97,27 @@ const AdminDashboard = () => {
             </div>
 
             {/* Filters and Search */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1">
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="relative w-full sm:max-w-md">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search size={18} className="text-gray-400" />
+                        <Search size={16} className="text-gray-400" />
                     </div>
                     <input
                         type="text"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50"
+                        className="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors placeholder-gray-400"
                         placeholder="Search all tickets by title or ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
-                <div className="flex gap-2 min-w-max">
-                    <div className="relative w-full sm:w-auto">
+                <div className="flex gap-2 min-w-max w-full sm:w-auto">
+                    <div className="relative w-full sm:w-auto min-w-[150px]">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Filter size={18} className="text-gray-400" />
+                            <Filter size={16} className="text-gray-400" />
                         </div>
                         <select
-                            className="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 appearance-none font-medium text-gray-700"
+                            className="block w-full pl-9 pr-8 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black bg-white shadow-sm transition-colors appearance-none font-medium text-gray-700"
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
                         >
@@ -127,6 +127,21 @@ const AdminDashboard = () => {
                             <option value="resolved">Resolved</option>
                             <option value="closed">Closed</option>
                         </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <svg
+                                className="h-4 w-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 9l-7 7-7-7"
+                                />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,7 +149,7 @@ const AdminDashboard = () => {
             {/* Tickets List */}
             {loading ? (
                 <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-black"></div>
                 </div>
             ) : filteredTickets.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -143,14 +158,14 @@ const AdminDashboard = () => {
                     ))}
                 </div>
             ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
-                        <Search size={28} />
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
+                    <div className="w-16 h-16 bg-gray-50 rounded-full border border-gray-100 flex items-center justify-center mb-4 text-gray-400">
+                        <Search size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                    <h3 className="text-lg font-semibold text-black mb-1">
                         No tickets match your filters
                     </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">
+                    <p className="text-gray-500 max-w-sm mx-auto text-sm">
                         Try adjusting your search term or status filter to find
                         what you are looking for.
                     </p>

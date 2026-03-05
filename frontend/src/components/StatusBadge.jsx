@@ -1,25 +1,20 @@
 import React from "react";
 
 export const StatusBadge = ({ status }) => {
-    let bgColor = "bg-gray-100";
-    let textColor = "text-gray-800";
+    let classes = "bg-gray-50 text-gray-600 border border-gray-200";
 
     switch (status?.toLowerCase()) {
         case "open":
-            bgColor = "bg-blue-100";
-            textColor = "text-blue-800";
+            classes = "bg-blue-50 text-blue-700 border border-blue-200";
             break;
         case "in_progress":
-            bgColor = "bg-yellow-100";
-            textColor = "text-yellow-800";
+            classes = "bg-yellow-50 text-yellow-700 border border-yellow-200";
             break;
         case "resolved":
-            bgColor = "bg-green-100";
-            textColor = "text-green-800";
+            classes = "bg-green-50 text-green-700 border border-green-200";
             break;
         case "closed":
-            bgColor = "bg-gray-200";
-            textColor = "text-gray-600";
+            classes = "bg-gray-50 text-gray-600 border border-gray-200";
             break;
         default:
             break;
@@ -27,7 +22,7 @@ export const StatusBadge = ({ status }) => {
 
     return (
         <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${bgColor} ${textColor}`}
+            className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium tracking-wide ${classes}`}
         >
             {status ? status.replace("_", " ").toUpperCase() : "UNKNOWN"}
         </span>
@@ -35,21 +30,17 @@ export const StatusBadge = ({ status }) => {
 };
 
 export const PriorityBadge = ({ priority }) => {
-    let bgColor = "bg-gray-100";
-    let textColor = "text-gray-800";
+    let classes = "bg-gray-50 text-gray-600 border border-gray-200";
 
     switch (priority?.toLowerCase()) {
         case "low":
-            bgColor = "bg-green-100";
-            textColor = "text-green-800";
+            classes = "bg-green-50 text-green-700 border border-green-200";
             break;
         case "medium":
-            bgColor = "bg-yellow-100";
-            textColor = "text-yellow-800";
+            classes = "bg-orange-50 text-orange-700 border border-orange-200";
             break;
         case "high":
-            bgColor = "bg-red-100";
-            textColor = "text-red-800";
+            classes = "bg-red-50 text-red-700 border border-red-200";
             break;
         default:
             break;
@@ -57,7 +48,7 @@ export const PriorityBadge = ({ priority }) => {
 
     return (
         <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${bgColor} ${textColor}`}
+            className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium tracking-wide ${classes}`}
         >
             {priority ? priority.toUpperCase() : "UNKNOWN"}
         </span>
